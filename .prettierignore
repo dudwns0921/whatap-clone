@@ -1,0 +1,21 @@
+# Dependencies
+node_modules
+
+# Production
+dist
+build
+.next
+
+# Turbo
+.turbo
+
+# Coverage
+coverage
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+*.log

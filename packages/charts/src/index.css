@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+@theme {
+  /* ========================================
+     Chart Color Palette ((¸ ÉÁ ¸)
+     Canvas drawingÐ getComputedStyle\ }´ ¬©
+     ======================================== */
+  --color-chart-primary: #3b82f6;      /* Tx (¸ |x/í */
+  --color-chart-secondary: #22c55e;    /* ôp (¸ |x/í */
+  --color-chart-tertiary: #f97316;     /* 3( (¸ |x/í */
+
+  --color-chart-success: #22c55e;      /* 1õ/Á ÁÜ */
+  --color-chart-warning: #f97316;      /* ½à ÁÜ */
+  --color-chart-error: #ef4444;        /* Ðì ÁÜ */
+  --color-chart-info: #06b6d4;         /* ô */
+
+  /* Multi-series chart palette */
+  --color-chart-1: #3b82f6;            /* ‘ */
+  --color-chart-2: #22c55e;            /* ] */
+  --color-chart-3: #f97316;            /* üi */
+  --color-chart-4: #ef4444;            /* h */
+  --color-chart-5: #a78bfa;            /* ô| */
+  --color-chart-6: #06b6d4;            /* ÜH */
+  --color-chart-7: #ec4899;            /* Ql */
+  --color-chart-8: #84cc16;            /* |„ */
+
+  /* ========================================
+     Chart Grid & Axis ((¸ ø¬Ü/•)
+     ======================================== */
+  --color-chart-grid: #f3f4f6;         /* ø¬Ü |x (Light) */
+  --color-chart-grid-dark: #27272a;    /* ø¬Ü |x (Dark) */
+
+  --color-chart-axis: #d1d5db;         /* • |x (Light) */
+  --color-chart-axis-dark: #52525b;    /* • |x (Dark) */
+
+  --color-chart-label: #9ca3af;        /* • t (Light) */
+  --color-chart-label-dark: #71717a;   /* • t (Dark) */
+
+  /* ========================================
+     Chart Background ((¸ 0½)
+     ======================================== */
+  --color-chart-bg: #ffffff;           /* (¸ 0½ (Light) */
+  --color-chart-bg-dark: #16181f;      /* (¸ 0½ (Dark) */
+
+  /* ========================================
+     Gradient Stops (ø|ptX ˆ,…Ä)
+     ======================================== */
+  --chart-gradient-start: 0.25;        /* Ü‘ ˆ,…Ä */
+  --chart-gradient-end: 0.05;          /* ] ˆ,…Ä */
+
+  /* ========================================
+     Typography (ð¸)
+     ======================================== */
+  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Chart label sizes */
+  --chart-label-sm: 0.5625rem;  /* 9px */
+  --chart-label-md: 0.625rem;   /* 10px */
+  --chart-label-lg: 0.6875rem;  /* 11px */
+}
+
+/* ========================================
+   Chart Container Utilities
+   ======================================== */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.chart-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ========================================
+   Chart Tooltip
+   ======================================== */
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  z-index: var(--z-tooltip, 1070);
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid var(--color-border-default, #e5e7eb);
+  border-radius: var(--radius-md, 6px);
+  padding: 0.5rem 0.75rem;
+  box-shadow: var(--shadow-lg);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-mono);
+}
+
+.chart-tooltip-dark {
+  background: rgba(22, 24, 31, 0.98);
+  border-color: var(--color-border-default-dark, #2a2e3a);
+  color: var(--color-text-primary-dark, #f9fafb);
+}
+
+/* ========================================
+   Chart Legend
+   ======================================== */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  font-size: var(--font-size-xs);
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chart-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chart-legend-label {
+  color: var(--color-text-secondary);
+  font-size: var(--chart-label-md);
+}
+
+.chart-legend-label-dark {
+  color: var(--color-text-secondary-dark);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+@keyframes chartFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes chartDrawLine {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

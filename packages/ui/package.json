@@ -1,0 +1,50 @@
+{
+  "name": "elio-ui",
+  "version": "0.0.1",
+  "description": "Common UI components for monitoring dashboards",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./Button": {
+      "import": "./dist/components/Button.js",
+      "types": "./dist/components/Button.d.ts"
+    },
+    "./Card": {
+      "import": "./dist/components/Card.js",
+      "types": "./dist/components/Card.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "test": "vitest",
+    "lint": "eslint src",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "monitoring",
+    "dashboard"
+  ],
+  "license": "MIT"
+}

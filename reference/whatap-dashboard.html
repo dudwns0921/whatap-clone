@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhaTap 애플리케이션 대시보드</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: #f3f4f6; }
+  .app { display: flex; height: 100vh; overflow: hidden; }
+
+  /* SIDEBAR */
+  .sidebar { width: 200px; background: #1a2035; display: flex; flex-direction: column; flex-shrink: 0; }
+  .sidebar-logo { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #2d3748; }
+  .logo-mark { display: flex; align-items: flex-end; gap: 2px; margin-right: 6px; }
+  .logo-mark span { background: #3b82f6; border-radius: 1px; display: inline-block; }
+  .logo-text { color: #fff; font-weight: 700; font-size: 14px; }
+  .sidebar-icons { display: flex; gap: 8px; color: #6b7280; font-size: 14px; cursor: pointer; }
+  .project-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid #2d3748; cursor: pointer; }
+  .project-row:hover { background: #2d3748; }
+  .project-badge { width: 20px; height: 20px; border-radius: 4px; background: #3b82f6; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700; margin-right: 8px; }
+  .project-name { color: #fff; font-size: 12px; font-weight: 600; flex: 1; }
+  .project-arrow { color: #6b7280; font-size: 11px; }
+  .nav-scroll { flex: 1; overflow-y: auto; padding: 4px 0; }
+  .nav-section-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; cursor: pointer; }
+  .nav-section-header span { color: #e5e7eb; font-size: 12px; font-weight: 600; }
+  .nav-section-header .toggle { color: #6b7280; font-size: 10px; }
+  .nav-item { display: flex; align-items: center; padding: 6px 12px; font-size: 12px; color: #d1d5db; cursor: pointer; }
+  .nav-item:hover { background: #2d3748; }
+  .nav-item.active { background: #2563eb; color: #fff; font-weight: 600; }
+  .nav-item.indent { padding-left: 32px; }
+  .nav-item .arrow { margin-left: auto; color: #6b7280; font-size: 10px; }
+  .sidebar-bottom { border-top: 1px solid #2d3748; display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; }
+  .sidebar-bottom-icons { display: flex; gap: 12px; color: #6b7280; font-size: 14px; cursor: pointer; }
+  .pcode { color: #4b5563; font-size: 9px; }
+
+  /* MAIN */
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  .topbar { background: #fff; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; flex-shrink: 0; }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .page-title { font-size: 15px; font-weight: 700; color: #1f2937; }
+  .ai-btn { display: flex; align-items: center; gap: 4px; padding: 3px 10px; background: #fff; border: 1.5px solid #60a5fa; border-radius: 999px; color: #2563eb; font-size: 11px; font-weight: 600; cursor: pointer; }
+  .docs-link { color: #3b82f6; font-size: 11px; cursor: pointer; text-decoration: none; }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .icon-btn { color: #6b7280; font-size: 16px; cursor: pointer; position: relative; }
+  .notif-badge { position: absolute; top: -4px; right: -4px; background: #ef4444; color: #fff; font-size: 8px; border-radius: 999px; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; }
+  .user-avatar { width: 28px; height: 28px; border-radius: 50%; background: #2563eb; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .trial-banner { background: #1f2937; color: #d1d5db; display: flex; align-items: center; justify-content: flex-end; padding: 5px 16px; font-size: 11px; flex-shrink: 0; gap: 8px; }
+  .trial-banner .days { color: #fde68a; font-weight: 600; }
+  .upgrade-btn { padding: 2px 10px; background: #3b82f6; color: #fff; border-radius: 4px; font-size: 10px; font-weight: 600; cursor: pointer; border: none; }
+  .toolbar { background: #fff; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 12px; padding: 6px 16px; flex-shrink: 0; }
+  .toolbar-left { display: flex; align-items: center; gap: 8px; }
+  .pause-btn { width: 24px; height: 24px; border: 1px solid #d1d5db; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 12px; cursor: pointer; background: #fff; }
+  .live-badge { display: flex; align-items: center; gap: 5px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; padding: 3px 8px; }
+  .live-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity: 0.4; } }
+  .live-text { color: #15803d; font-size: 11px; font-weight: 700; font-family: monospace; }
+  .agent-btn { display: flex; align-items: center; gap: 4px; padding: 3px 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 11px; color: #4b5563; cursor: pointer; background: #fff; }
+  .toolbar-stats { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #4b5563; border-left: 1px solid #e5e7eb; padding-left: 12px; }
+  .toolbar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .search-box { display: flex; align-items: center; gap: 4px; border: 1px solid #d1d5db; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #9ca3af; }
+  .default-btn { padding: 3px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 11px; color: #4b5563; background: #fff; cursor: pointer; }
+  .agent-label { padding: 4px 16px; font-size: 11px; color: #6b7280; background: #f9fafb; border-bottom: 1px solid #f3f4f6; flex-shrink: 0; }
+
+  /* DASHBOARD GRID */
+  .dashboard { flex: 1; overflow: auto; padding: 12px; }
+  .grid-rows { display: flex; flex-direction: column; gap: 8px; }
+
+  .row { display: flex; gap: 8px; }
+  .row-1 { height: 130px; }
+  .row-2 { height: 155px; }
+  .row-3 { height: 165px; }
+  .row-4 { flex: 1; min-height: 145px; }
+
+  .panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+  .panel-w-fixed { flex: none; width: 160px; }
+  .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px 4px; border-bottom: 1px solid #f3f4f6; flex-shrink: 0; }
+  .panel-title { font-size: 11px; font-weight: 700; color: #374151; display: flex; align-items: center; gap: 4px; }
+  .info-icon { width: 14px; height: 14px; border: 1px solid #d1d5db; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; color: #9ca3af; cursor: help; flex-shrink: 0; }
+  .panel-actions { display: flex; align-items: center; gap: 4px; color: #9ca3af; font-size: 10px; }
+  .panel-body { flex: 1; padding: 6px 8px; overflow: hidden; display: flex; flex-direction: column; }
+
+  /* Active Transaction Speed */
+  .tps-header { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+  .rps-tps-val { font-weight: 700; color: #1f2937; }
+  .speed-counter { color: #3b82f6; font-family: monospace; font-size: 14px; font-weight: 700; letter-spacing: 2px; }
+
+  /* Hitmap */
+  .hitmap-container { display: flex; flex-direction: column; height: 100%; }
+  .hitmap-inner { display: flex; flex: 1; gap: 4px; }
+  .hitmap-y-labels { display: flex; flex-direction: column; justify-content: space-between; font-size: 9px; color: #9ca3af; padding: 2px 0; flex-shrink: 0; }
+  .hitmap-grid { flex: 1; background: #fff; border: 1px solid #f3f4f6; border-radius: 2px; }
+  .hitmap-x-labels { display: flex; justify-content: space-between; font-size: 9px; color: #9ca3af; margin-top: 2px; margin-left: 20px; }
+
+  /* App Summary */
+  .summary-title { font-size: 10px; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
+  .summary-row { display: flex; justify-content: space-between; align-items: center; font-size: 10px; margin-bottom: 4px; }
+  .summary-label { color: #6b7280; }
+  .summary-val { font-weight: 700; color: #1f2937; }
+
+  /* Active Status */
+  .status-row { display: flex; justify-content: space-between; align-items: center; font-size: 10px; margin-bottom: 5px; }
+  .status-label { color: #6b7280; }
+  .status-val { font-weight: 700; color: #1f2937; }
+
+  /* Active Transaction */
+  .at-body { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+  .at-left .dash { font-size: 10px; color: #9ca3af; }
+  .at-left .count { font-size: 26px; font-weight: 700; color: #1f2937; line-height: 1; }
+  .at-right { text-align: right; }
+  .at-active-label { font-size: 10px; color: #9ca3af; }
+  .at-active-val { font-size: 16px; font-weight: 700; color: #1f2937; }
+  .donut-wrap { display: flex; flex-direction: column; align-items: center; }
+  .donut-legend { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; justify-content: center; }
+  .legend-item { display: flex; align-items: center; gap: 3px; font-size: 8px; color: #4b5563; }
+  .legend-dot { width: 8px; height: 4px; border-radius: 2px; }
+
+  /* Chart axis */
+  .chart-y-label { font-size: 9px; color: #9ca3af; }
+  .chart-x-labels { display: flex; justify-content: space-between; font-size: 8px; color: #9ca3af; margin-top: 2px; }
+  .chart-wrap { flex: 1; min-height: 0; }
+
+  /* Apdex bands */
+  .apdex-wrap { flex: 1; position: relative; min-height: 0; }
+  .apdex-band { position: absolute; left: 0; right: 0; display: flex; align-items: flex-start; padding-left: 4px; }
+  .apdex-band-label { font-size: 7px; padding-top: 2px; }
+
+  svg text { font-family: inherit; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div style="display:flex;align-items:center;">
+        <div class="logo-mark">
+          <span style="width:3px;height:6px;"></span>
+          <span style="width:3px;height:10px;"></span>
+          <span style="width:3px;height:8px;"></span>
+          <span style="width:3px;height:12px;"></span>
+          <span style="width:3px;height:10px;"></span>
+        </div>
+        <span class="logo-text">WhaTap</span>
+      </div>
+      <div class="sidebar-icons">
+        <span title="검색">⌕</span>
+        <span title="접기">«</span>
+      </div>
+    </div>
+
+    <div class="project-row">
+      <div class="project-badge">A</div>
+      <span class="project-name">테스트</span>
+      <span class="project-arrow">›</span>
+    </div>
+
+    <div class="nav-scroll">
+      <div class="nav-section-header">
+        <span>🗂 앱 대시보드</span>
+        <span class="toggle">∧</span>
+      </div>
+      <div class="nav-item indent active">애플리케이션 대시보드</div>
+      <div class="nav-item indent">트랜잭션 맵</div>
+      <div class="nav-item indent">Flex 보드</div>
+      <div class="nav-item">분석<span class="arrow">›</span></div>
+      <div class="nav-item">토폴로지<span class="arrow">›</span></div>
+      <div class="nav-item">로그<span class="arrow">›</span></div>
+      <div class="nav-item">통계<span class="arrow">›</span></div>
+      <div class="nav-item">OpenMetrics<span class="arrow">›</span></div>
+      <div class="nav-item">보고서</div>
+      <div class="nav-item">경고 알림<span class="arrow">›</span></div>
+      <div class="nav-item">인스턴스 성능 관리</div>
+      <div class="nav-item">관리<span class="arrow">›</span></div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-bottom-icons">
+        <span>⌂</span><span>☆</span><span>⊟</span>
+      </div>
+      <span class="pcode">PCODE: 49942</span>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOP HEADER -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="page-title">애플리케이션 대시보드</span>
+        <button class="ai-btn">✦ WhaTap AI</button>
+        <a class="docs-link">Docs 링크</a>
+      </div>
+      <div class="topbar-right">
+        <span class="icon-btn">🔔</span>
+        <span class="icon-btn" style="position:relative;">
+          🔔
+          <span class="notif-badge">18</span>
+        </span>
+        <span class="icon-btn">⊡</span>
+        <span class="icon-btn">💬</span>
+        <div class="user-avatar">J</div>
+      </div>
+    </div>
+
+    <!-- TRIAL BANNER -->
+    <div class="trial-banner">
+      무료체험 기간이 <span class="days">14일</span> 남았습니다.
+      <button class="upgrade-btn">유료 전환</button>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button class="pause-btn">⏸</button>
+        <div class="live-badge">
+          <span class="live-dot"></span>
+          <span class="live-text" id="live-clock">LIVE 20:00:48</span>
+        </div>
+        <button class="agent-btn">에이전트 ▾</button>
+      </div>
+      <div class="toolbar-stats">
+        <span>Total <strong>1</strong></span>
+        <span>Active <strong>1</strong></span>
+        <span>Inactive <strong>0</strong></span>
+        <span style="width:20px;height:20px;border:1px solid #d1d5db;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9ca3af;cursor:pointer;">⊙</span>
+      </div>
+      <div class="toolbar-right">
+        <div class="search-box">⌕ 검색</div>
+        <button class="default-btn">Default</button>
+      </div>
+    </div>
+
+    <!-- AGENT LABEL -->
+    <div class="agent-label">whatap-test-45-105-node</div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard">
+      <div class="grid-rows">
+
+        <!-- ROW 1 -->
+        <div class="row row-1">
+          <!-- Active Transaction Speed -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                액티브 트랜잭션 스피드
+                <span class="info-icon">i</span>
+              </div>
+              <div class="panel-actions"><span>›</span></div>
+            </div>
+            <div class="panel-body">
+              <div class="tps-header">
+                <span>RPS <strong class="rps-tps-val">0</strong></span>
+                <span class="speed-counter">00 00 00</span>
+                <span>TPS <strong class="rps-tps-val">0</strong></span>
+              </div>
+              <div class="chart-wrap">
+                <svg viewBox="0 0 400 55" style="width:100%;height:100%;">
+                  <defs>
+                    <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
+                      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,50 L400,50" fill="none" stroke="#e5e7eb" stroke-width="0.5"/>
+                  <path d="M0,27 L400,27" fill="none" stroke="#e5e7eb" stroke-width="0.5"/>
+                  <path d="M0,50 L400,50" fill="url(#blueGrad)"/>
+                  <path d="M0,50 L400,50" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hitmap -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">히트맵 <span class="info-icon">i</span></div>
+              <div class="panel-actions" style="color:#3b82f6;font-size:10px;">0.0</div>
+            </div>
+            <div class="panel-body">
+              <div class="hitmap-container">
+                <div class="hitmap-inner">
+                  <div class="hitmap-y-labels">
+                    <span>80s</span><span>64s</span><span>48s</span><span>32s</span><span>16s</span><span>0s</span>
+                  </div>
+                  <div class="hitmap-grid">
+                    <svg viewBox="0 0 120 60" style="width:100%;height:100%;">
+                      <line x1="0" y1="12" x2="120" y2="12" stroke="#f3f4f6" stroke-width="0.5"/>
+                      <line x1="0" y1="24" x2="120" y2="24" stroke="#f3f4f6" stroke-width="0.5"/>
+                      <line x1="0" y1="36" x2="120" y2="36" stroke="#f3f4f6" stroke-width="0.5"/>
+                      <line x1="0" y1="48" x2="120" y2="48" stroke="#f3f4f6" stroke-width="0.5"/>
+                      <line x1="24" y1="0" x2="24" y2="60" stroke="#f3f4f6" stroke-width="0.5"/>
+                      <line x1="48" y1="0" x2="48" y2="60" stroke="#f3f4f6" stroke-width="0.5"/>
+                      <line x1="72" y1="0" x2="72" y2="60" stroke="#f3f4f6" stroke-width="0.5"/>
+                      <line x1="96" y1="0" x2="96" y2="60" stroke="#f3f4f6" stroke-width="0.5"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="hitmap-x-labels">
+                  <span>19:51</span><span>19:52</span><span>19:53</span><span>19:54</span><span>19:55</span><span>19:56</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROW 2 -->
+        <div class="row row-2">
+          <!-- App Summary -->
+          <div class="panel panel-w-fixed">
+            <div class="panel-body" style="padding:8px 10px;">
+              <div class="summary-title">앱리...</div>
+              <div class="summary-row"><span class="summary-label">애플리케이션...</span><strong class="summary-val">1</strong></div>
+              <div class="summary-row"><span class="summary-label">비활성 앱...</span><strong class="summary-val">0</strong></div>
+              <div class="summary-row"><span class="summary-label">CPU 코어</span><strong class="summary-val">10</strong></div>
+              <div class="summary-row"><span class="summary-label">Hosts</span><strong class="summary-val">1</strong></div>
+            </div>
+          </div>
+
+          <!-- Active Status -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">액티브 스테이터스 <span class="info-icon">i</span></div>
+            </div>
+            <div class="panel-body">
+              <div class="status-row"><span class="status-label">METHOD</span><strong class="status-val">0</strong></div>
+              <div class="status-row"><span class="status-label">SQL</span><strong class="status-val">0</strong></div>
+              <div class="status-row"><span class="status-label">HTTPC</span><strong class="status-val">0</strong></div>
+              <div class="status-row"><span class="status-label">DBC</span><strong class="status-val">0</strong></div>
+              <div class="status-row"><span class="status-label">SOCKET</span><strong class="status-val">0</strong></div>
+            </div>
+          </div>
+
+          <!-- Active Transactions -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">액티브 트랜잭션 <span class="info-icon">i</span></div>
+              <div class="panel-actions">›</div>
+            </div>
+            <div class="panel-body">
+              <div class="at-body">
+                <div class="at-left">
+                  <div class="dash">-</div>
+                  <div class="count">0</div>
+                </div>
+                <div class="donut-wrap">
+                  <svg viewBox="0 0 100 100" style="width:80px;height:80px;">
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#e2f0fb" stroke-width="10"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#93c5fd" stroke-width="10"
+                      stroke-dasharray="22 197" transform="rotate(-90 50 50)"/>
+                    <text x="50" y="55" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e293b">0</text>
+                  </svg>
+                  <div class="donut-legend">
+                    <span class="legend-item"><span class="legend-dot" style="background:#f87171;"></span>Very Slow</span>
+                    <span class="legend-item"><span class="legend-dot" style="background:#fb923c;"></span>Slow</span>
+                    <span class="legend-item"><span class="legend-dot" style="background:#60a5fa;"></span>Normal</span>
+                  </div>
+                </div>
+                <div class="at-right">
+                  <div class="at-active-label">Active</div>
+                  <div class="at-active-val">1</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROW 3 -->
+        <div class="row row-3">
+          <!-- Apdex -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Apdex <span class="info-icon">i</span></div>
+            </div>
+            <div class="panel-body">
+              <div style="flex:1;position:relative;min-height:0;">
+                <svg viewBox="0 0 200 110" style="width:100%;height:100%;">
+                  <rect x="0" y="0" width="200" height="27" fill="#dcfce7"/>
+                  <rect x="0" y="27" width="200" height="27" fill="#bbf7d0"/>
+                  <rect x="0" y="54" width="200" height="27" fill="#fef9c3"/>
+                  <rect x="0" y="81" width="200" height="29" fill="#fee2e2"/>
+                  <text x="4" y="11" font-size="7" fill="#166534">Excellent</text>
+                  <text x="4" y="38" font-size="7" fill="#15803d">Good</text>
+                  <text x="4" y="65" font-size="7" fill="#ca8a04">Fair</text>
+                  <text x="4" y="92" font-size="7" fill="#dc2626">Poor</text>
+                  <path d="M0,11 L60,13 L120,17 L200,20" fill="none" stroke="#0369a1" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="chart-x-labels">
+                <span>19:52</span><span>19:54</span><span>19:56</span><span>19:58</span><span>20:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TPS -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">TPS <span class="info-icon">i</span></div>
+              <div class="panel-actions">📈 ⊡</div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-y-label">2</div>
+              <div class="chart-wrap" style="flex:1;">
+                <svg viewBox="0 0 200 90" style="width:100%;height:100%;">
+                  <defs>
+                    <linearGradient id="tpsGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15"/>
+                      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <line x1="0" y1="45" x2="200" y2="45" stroke="#f3f4f6" stroke-width="0.5"/>
+                  <path d="M0,90 L20,90 L40,85 L60,90 L80,90 L100,88 L120,90 L140,87 L160,90 L180,89 L200,90 L200,90 L0,90 Z" fill="url(#tpsGrad)"/>
+                  <path d="M0,90 L20,90 L40,85 L60,90 L80,90 L100,88 L120,90 L140,87 L160,90 L180,89 L200,90" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                  <text x="195" y="88" text-anchor="end" font-size="7" fill="#374151">0</text>
+                </svg>
+              </div>
+              <div class="chart-x-labels">
+                <span>19:52</span><span>19:54</span><span>19:56</span><span>19:58</span><span>20:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 금일 TPS -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">금일 TPS <span class="info-icon">i</span></div>
+              <div class="panel-actions" style="font-size:9px;gap:3px;">
+                <span style="background:#f3f4f6;padding:1px 4px;border-radius:3px;color:#4b5563;">All APP</span>
+                <span style="color:#9ca3af;">비교</span>
+                <span style="border:1px solid #d1d5db;padding:1px 4px;border-radius:3px;color:#4b5563;">1일 전</span>
+                <span>›</span>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-y-label">1</div>
+              <div class="chart-wrap" style="flex:1;">
+                <svg viewBox="0 0 200 90" style="width:100%;height:100%;">
+                  <line x1="0" y1="45" x2="200" y2="45" stroke="#f3f4f6" stroke-width="0.5"/>
+                  <path d="M0,90 L100,90 L110,75 L120,90 L200,90" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                  <circle cx="110" cy="75" r="2" fill="#3b82f6"/>
+                  <text x="110" y="70" text-anchor="middle" font-size="7" fill="#374151">0.03</text>
+                </svg>
+              </div>
+              <div class="chart-x-labels">
+                <span>01:00</span><span>09:00</span><span>17:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 금일 사용... -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">금일 사용... <span class="info-icon">i</span></div>
+              <div class="panel-actions">⊡</div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-y-label">2</div>
+              <div class="chart-wrap" style="flex:1;">
+                <svg viewBox="0 0 200 90" style="width:100%;height:100%;">
+                  <defs>
+                    <linearGradient id="orgGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
+                      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,90 L60,88 L90,82 L110,88 L140,85 L200,90 L200,90 L0,90 Z" fill="url(#orgGrad)"/>
+                  <path d="M0,90 L60,88 L90,82 L110,88 L140,85 L200,90" fill="none" stroke="#f97316" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="chart-x-labels">
+                <span>01:00</span><span>09:00</span><span>17:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROW 4 -->
+        <div class="row row-4">
+          <!-- 평균 응답시간 -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">평균 응답시간 <span class="info-icon">i</span></div>
+              <div class="panel-actions">📈 ⊡</div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-y-label">2ms</div>
+              <div class="chart-wrap" style="flex:1;">
+                <svg viewBox="0 0 200 80" style="width:100%;height:100%;">
+                  <path d="M0,80 L20,60 L30,80 L40,55 L50,80 L60,65 L70,80 L80,58 L90,80 L100,62 L110,80 L120,70 L130,80 L140,56 L150,80 L160,60 L170,80 L180,55 L190,80 L200,80" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="chart-y-label">1ms</div>
+              <div class="chart-x-labels">
+                <span>19:52</span><span>19:54</span><span>19:56</span><span>19:58</span><span>20:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 시스템 CPU -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">시스템 CPU</div>
+              <div class="panel-actions">⊡</div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-y-label">100%</div>
+              <div class="chart-wrap" style="flex:1;">
+                <svg viewBox="0 0 200 80" style="width:100%;height:100%;">
+                  <defs>
+                    <linearGradient id="cpuGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
+                      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,75 L20,73 L30,58 L40,50 L50,62 L60,70 L70,73 L80,65 L85,48 L90,58 L100,65 L110,70 L120,50 L130,55 L140,62 L150,70 L160,65 L170,68 L180,72 L200,75 L200,80 L0,80 Z" fill="url(#cpuGrad)"/>
+                  <path d="M0,75 L20,73 L30,58 L40,50 L50,62 L60,70 L70,73 L80,65 L85,48 L90,58 L100,65 L110,70 L120,50 L130,55 L140,62 L150,70 L160,65 L170,68 L180,72 L200,75" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                  <text x="85" y="44" text-anchor="middle" font-size="7" fill="#374151">38.39%</text>
+                </svg>
+              </div>
+              <div class="chart-y-label">50%</div>
+              <div class="chart-x-labels">
+                <span>19:52</span><span>19:54</span><span>19:56</span><span>19:58</span><span>20:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 힙 메모리 -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">힙 메모리 <span class="info-icon">i</span></div>
+              <div class="panel-actions" style="display:flex;align-items:center;gap:4px;">
+                <span style="font-weight:600;color:#374151;font-size:10px;">16GiB</span>
+                <span>⊡</span>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-y-label">20GiB</div>
+              <div class="chart-wrap" style="flex:1;">
+                <svg viewBox="0 0 200 80" style="width:100%;height:100%;">
+                  <defs>
+                    <linearGradient id="heapGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25"/>
+                      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.05"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,25 L30,24 L60,23 L90,22 L120,21 L150,20 L180,19 L200,18 L200,80 L0,80 Z" fill="url(#heapGrad)"/>
+                  <path d="M0,25 L30,24 L60,23 L90,22 L120,21 L150,20 L180,19 L200,18" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="chart-y-label">10GiB</div>
+              <div class="chart-x-labels">
+                <span>19:52</span><span>19:54</span><span>19:56</span><span>19:58</span><span>20:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 동시접속 -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">동시접속...</div>
+              <div class="panel-actions">⊡</div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-y-label">2</div>
+              <div class="chart-wrap" style="flex:1;">
+                <svg viewBox="0 0 200 80" style="width:100%;height:100%;">
+                  <defs>
+                    <linearGradient id="concGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15"/>
+                      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,80 L40,78 L60,75 L80,80 L100,77 L120,80 L140,76 L160,80 L200,80 L200,80 L0,80 Z" fill="url(#concGrad)"/>
+                  <path d="M0,80 L40,78 L60,75 L80,80 L100,77 L120,80 L140,76 L160,80 L200,80" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="chart-x-labels">
+                <span>19:52</span><span>19:54</span><span>19:56</span><span>19:58</span><span>20:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- .grid-rows -->
+    </div><!-- .dashboard -->
+  </div><!-- .main -->
+</div><!-- .app -->
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('live-clock').textContent = `LIVE ${h}:${m}:${s}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
