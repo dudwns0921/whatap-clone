@@ -1,59 +1,37 @@
 @import "tailwindcss";
 
+/* ========================================
+   Chart Theme Tokens (for Canvas API)
+   Canvas drawingÏóêÏÑú getComputedStyleÎ°ú ÏùΩÏñ¥ ÏÇ¨Ïö©
+   ======================================== */
 @theme {
-  /* ========================================
-     Chart Color Palette ((∏ …¡ ∏)
-     Canvas drawing– getComputedStyle\ }¥ ¨©
-     ======================================== */
-  --color-chart-primary: #3b82f6;      /* Tx (∏ |x/Ì */
-  --color-chart-secondary: #22c55e;    /* Ùp (∏ |x/Ì */
-  --color-chart-tertiary: #f97316;     /* 3( (∏ |x/Ì */
+  /* Chart Color Palette (Multi-series) */
+  --color-chart-1: #00d4ff;  /* Cyan */
+  --color-chart-2: #00ff88;  /* Green */
+  --color-chart-3: #ffb800;  /* Yellow/Orange */
+  --color-chart-4: #ff4444;  /* Red */
+  --color-chart-5: #c084fc;  /* Purple */
+  --color-chart-6: #06b6d4;  /* Cyan variant */
+  --color-chart-7: #ec4899;  /* Pink */
+  --color-chart-8: #84cc16;  /* Lime */
 
-  --color-chart-success: #22c55e;      /* 1ı/¡ ¡‹ */
-  --color-chart-warning: #f97316;      /* Ω‡ ¡‹ */
-  --color-chart-error: #ef4444;        /* –Ï ¡‹ */
-  --color-chart-info: #06b6d4;         /* Ù */
+  /* Chart Grid & Axis */
+  --color-chart-grid: #f3f4f6;       /* Grid lines (Light) */
+  --color-chart-grid-dark: #27272a;  /* Grid lines (Dark) */
+  --color-chart-axis: #d1d5db;       /* Axis lines (Light) */
+  --color-chart-axis-dark: #52525b;  /* Axis lines (Dark) */
+  --color-chart-label: #9ca3af;      /* Axis labels (Light) */
+  --color-chart-label-dark: #71717a; /* Axis labels (Dark) */
 
-  /* Multi-series chart palette */
-  --color-chart-1: #3b82f6;            /* ë */
-  --color-chart-2: #22c55e;            /* ] */
-  --color-chart-3: #f97316;            /* ¸i */
-  --color-chart-4: #ef4444;            /* h */
-  --color-chart-5: #a78bfa;            /* Ù| */
-  --color-chart-6: #06b6d4;            /* ‹H */
-  --color-chart-7: #ec4899;            /* Ql */
-  --color-chart-8: #84cc16;            /* |Ñ */
+  /* Chart Background */
+  --color-chart-bg: #ffffff;         /* Chart background (Light) */
+  --color-chart-bg-dark: #16181f;    /* Chart background (Dark) */
 
-  /* ========================================
-     Chart Grid & Axis ((∏ ¯¨‹/ï)
-     ======================================== */
-  --color-chart-grid: #f3f4f6;         /* ¯¨‹ |x (Light) */
-  --color-chart-grid-dark: #27272a;    /* ¯¨‹ |x (Dark) */
+  /* Gradient Opacity */
+  --chart-gradient-start: 0.25;      /* Start opacity for area gradients */
+  --chart-gradient-end: 0.05;        /* End opacity for area gradients */
 
-  --color-chart-axis: #d1d5db;         /* ï |x (Light) */
-  --color-chart-axis-dark: #52525b;    /* ï |x (Dark) */
-
-  --color-chart-label: #9ca3af;        /* ï t (Light) */
-  --color-chart-label-dark: #71717a;   /* ï t (Dark) */
-
-  /* ========================================
-     Chart Background ((∏ 0Ω)
-     ======================================== */
-  --color-chart-bg: #ffffff;           /* (∏ 0Ω (Light) */
-  --color-chart-bg-dark: #16181f;      /* (∏ 0Ω (Dark) */
-
-  /* ========================================
-     Gradient Stops (¯|ptX à,Öƒ)
-     ======================================== */
-  --chart-gradient-start: 0.25;        /* ‹ë à,Öƒ */
-  --chart-gradient-end: 0.05;          /* ] à,Öƒ */
-
-  /* ========================================
-     Typography (∏)
-     ======================================== */
-  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-
-  /* Chart label sizes */
+  /* Chart Label Sizes */
   --chart-label-sm: 0.5625rem;  /* 9px */
   --chart-label-md: 0.625rem;   /* 10px */
   --chart-label-lg: 0.6875rem;  /* 11px */
