@@ -1,5 +1,4 @@
 import Header from '../components/Header';
-import TrialBanner from '../components/TrialBanner';
 import ControlBar from '../components/ControlBar';
 
 export default function Dashboard() {
@@ -7,9 +6,6 @@ export default function Dashboard() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <Header />
-
-      {/* Trial Banner */}
-      <TrialBanner />
 
       {/* Control Bar */}
       <ControlBar />
