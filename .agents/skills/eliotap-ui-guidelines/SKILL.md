@@ -18,6 +18,7 @@ UI 관련 작업을 시작하기 전에 **반드시** 아래 파일들을 먼저
 ```
 reference/main-ui.png              → 메인 UI 레퍼런스
 reference/theme-change-ui.png      → 테마 변경 UI 레퍼런스
+reference/chart-ui.png             → 차트 호버 인터랙션 및 툴팁 UI 레퍼런스
 reference/whatap-dashboard.html    → HTML 구조 및 스타일 레퍼런스
 ```
 

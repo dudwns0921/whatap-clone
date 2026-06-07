@@ -15,9 +15,15 @@ export function useChartResize(containerRef: RefObject<HTMLElement | null>) {
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) {
-        setSize({
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
+        const newWidth = entry.contentRect.width;
+        const newHeight = entry.contentRect.height;
+
+        // Only update if size actually changed
+        setSize((prevSize) => {
+          if (prevSize.width === newWidth && prevSize.height === newHeight) {
+            return prevSize;
+          }
+          return { width: newWidth, height: newHeight };
         });
       }
     });
@@ -33,7 +39,7 @@ export function useChartResize(containerRef: RefObject<HTMLElement | null>) {
     return () => {
       observer.disconnect();
     };
-  }, [containerRef]);
+  }, []);
 
   return size;
 }

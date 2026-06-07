@@ -4,8 +4,10 @@ import Dashboard from './pages/Dashboard';
 import Storybook from './pages/Storybook';
 
 export default function App() {
+  const basename = import.meta.env.BASE_URL;
+
   return (
-    <BrowserRouter basename="/whatap-clone">
+    <BrowserRouter basename={basename}>
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />

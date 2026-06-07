@@ -115,9 +115,13 @@ whatap-clone/
   - [x] useChartResize 훅 (ResizeObserver)
   - [x] Canvas 유틸리티 (drawLine, drawText, drawGrid 등)
   - [x] 차트 유틸리티 (scaleValue, valueToY, indexToX 등)
-- [x] LineChart 구현
-  - [x] TPS 데이터 시각화
-  - [x] Grid 라인 및 Y축 레이블
+- [x] LineChart 구현 ✅
+  - [x] 시계열 데이터 시각화 (timestamp 기반)
+  - [x] X축 시간 레이블 (HH:MM 형식)
+  - [x] Y축 값 레이블 (왼쪽 정렬)
+  - [x] 연한 점선 그리드
+  - [x] 호버 인터랙션 (수직 점선 + 점 표시)
+  - [x] 테마 적용 툴팁 (날짜/시간 + 값)
   - [x] 반응형 크기 조정
   - [x] Storybook 스토리 (6가지 케이스)
   - [x] 대시보드 통합 (TPS, CPU, 메모리)

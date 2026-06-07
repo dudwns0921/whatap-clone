@@ -2,8 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-export default defineConfig({
-  base: '/whatap-clone/',
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? '/whatap-clone/' : '/',
   plugins: [react()],
   resolve: {
     alias: {
@@ -13,4 +13,4 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-});
+}));

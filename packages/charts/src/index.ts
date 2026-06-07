@@ -5,7 +5,7 @@ export const version = '0.0.1';
 
 // Components
 export { LineChart } from './components/LineChart';
-export type { LineChartProps } from './components/LineChart';
+export type { LineChartProps, LineChartDataPoint } from './components/LineChart';
 
 // Hooks
 export { useCanvas } from './hooks/useCanvas';

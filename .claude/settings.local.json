@@ -19,7 +19,8 @@
       "Bash(npm run build-storybook:*)",
       "Bash(npm run copy-storybook:*)",
       "Bash(npx turbo:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

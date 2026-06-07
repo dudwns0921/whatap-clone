@@ -14,9 +14,9 @@ export default function Dashboard() {
 
       {/* Main Content - Widget Grid */}
       <div className="flex-1 overflow-auto bg-[var(--color-dashboard-bg)] p-3">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {/* Placeholder for widgets */}
-          <div className="lg:col-span-2 bg-[var(--color-surface-secondary)] border border-[var(--color-border-default)] rounded-md p-4 h-64 flex items-center justify-center text-[var(--color-text-tertiary)]">
+          <div className="col-span-2 bg-[var(--color-surface-secondary)] border border-[var(--color-border-default)] rounded-md p-4 h-64 flex items-center justify-center text-[var(--color-text-tertiary)]">
             히트맵 위젯
           </div>
 
@@ -29,11 +29,11 @@ export default function Dashboard() {
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs font-semibold text-[var(--color-text-primary)]">TPS</h3>
               <span className="text-[10px] text-[var(--color-text-tertiary)] font-mono">
-                {tpsData[tpsData.length - 1]} req/s
+                {tpsData[tpsData.length - 1].value} req/s
               </span>
             </div>
             <div className="h-[calc(100%-2rem)]">
-              <LineChart data={tpsData} color="#00d4ff" lineWidth={2} showGrid={true} />
+              <LineChart data={tpsData} color="#3b82f6" lineWidth={1.5} showGrid={true} />
             </div>
           </div>
 
@@ -46,11 +46,11 @@ export default function Dashboard() {
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs font-semibold text-[var(--color-text-primary)]">시스템 CPU</h3>
               <span className="text-[10px] text-[var(--color-text-tertiary)] font-mono">
-                {cpuData[cpuData.length - 1]}%
+                {cpuData[cpuData.length - 1].value}%
               </span>
             </div>
             <div className="h-[calc(100%-2rem)]">
-              <LineChart data={cpuData} color="#00ff88" lineWidth={2} showGrid={true} />
+              <LineChart data={cpuData} color="#10b981" lineWidth={1.5} showGrid={true} />
             </div>
           </div>
 
@@ -59,11 +59,11 @@ export default function Dashboard() {
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs font-semibold text-[var(--color-text-primary)]">힙 메모리</h3>
               <span className="text-[10px] text-[var(--color-text-tertiary)] font-mono">
-                {memoryData[memoryData.length - 1]} MB
+                {memoryData[memoryData.length - 1].value} MB
               </span>
             </div>
             <div className="h-[calc(100%-2rem)]">
-              <LineChart data={memoryData} color="#ffb800" lineWidth={2} showGrid={true} />
+              <LineChart data={memoryData} color="#f59e0b" lineWidth={1.5} showGrid={true} />
             </div>
           </div>
         </div>
