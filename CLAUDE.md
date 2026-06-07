@@ -295,16 +295,31 @@ export const cpuMetrics = Array.from({ length: 60 }, (_, i) => ({
 
 ## Git Workflow
 
+### Pre-commit Hook (자동 빌드 체크)
+
+**중요**: 커밋 전 자동으로 TypeScript 빌드가 실행됩니다.
+
+`.git/hooks/pre-commit` 훅이 설정되어 있어, 매 커밋 시 자동으로 `npx turbo run build`를 실행합니다.
+
+- ✅ 빌드 성공 시: 커밋 진행
+- ❌ 빌드 실패 시: 커밋 차단, TypeScript 에러 수정 필요
+
+**훅 우회 (권장하지 않음):**
+```bash
+git commit --no-verify  # 빌드 체크 건너뛰기 (긴급 상황에만 사용)
+```
+
 ### 커밋 규칙
 
 매 커밋 시 **반드시** README.md의 "개발 진행상황" 섹션을 업데이트합니다.
 
 **커밋 전 체크리스트:**
 
-1. 완료한 작업을 README.md에 체크 (`- [x]`)
-2. 다음 단계 작업이 있다면 추가 (`- [ ]`)
-3. Phase 완료 시 제목에 ✅ 표시
-4. 현재 진행 중인 Phase에 🚧 표시
+1. **빌드 통과 확인** (pre-commit hook이 자동 실행)
+2. 완료한 작업을 README.md에 체크 (`- [x]`)
+3. 다음 단계 작업이 있다면 추가 (`- [ ]`)
+4. Phase 완료 시 제목에 ✅ 표시
+5. 현재 진행 중인 Phase에 🚧 표시
 
 **예시:**
 
