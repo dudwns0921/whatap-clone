@@ -1,4 +1,5 @@
 import { useRef, useCallback, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useCanvas } from '../hooks/useCanvas';
 import { useChartResize } from '../hooks/useChartResize';
 import { drawText, clearCanvas } from '../utils/canvasUtils';
@@ -30,7 +31,7 @@ export function LineChart({
   const { width, height } = useChartResize(containerRef);
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
+  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
 
   const padding = { top: 20, right: 20, bottom: 40, left: 35 };
 
@@ -75,7 +76,7 @@ export function LineChart({
       const chartWidth = width - padding.left - padding.right;
       const chartHeight = height - padding.top - padding.bottom;
 
-      const values = data.map((d) => d.value);
+      const values = data.map(d => d.value);
       const { min, max } = getMinMax(values);
       const range = max - min || 1;
 
@@ -143,8 +144,7 @@ export function LineChart({
       // Draw hover effects
       if (hoveredIndex !== null && hoveredIndex < data.length) {
         const hoverX = padding.left + indexToX(hoveredIndex, data.length, chartWidth);
-        const hoverY =
-          padding.top + valueToY(data[hoveredIndex].value, min, max, chartHeight);
+        const hoverY = padding.top + valueToY(data[hoveredIndex].value, min, max, chartHeight);
 
         // Vertical dashed line
         ctx.beginPath();
@@ -172,6 +172,13 @@ export function LineChart({
   const canvasRef = useCanvas({ width, height, draw });
 
   // Mouse move handler
+  // CSS 변수 읽기 함수
+  const getCSSVariable = (variable: string): string => {
+    if (typeof window === 'undefined') return '';
+    const root = document.documentElement;
+    return getComputedStyle(root).getPropertyValue(variable).trim();
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (data.length === 0 || !containerRef.current) return;
 
@@ -191,48 +198,85 @@ export function LineChart({
       const relativeX = mouseX - padding.left;
       const index = Math.round((relativeX / chartWidth) * (data.length - 1));
       setHoveredIndex(Math.max(0, Math.min(data.length - 1, index)));
-      setMousePos({ x: mouseX, y: mouseY });
+      // Absolute position for portal tooltip
+      setTooltipPos({
+        x: rect.left + mouseX + 10,
+        y: rect.top + mouseY - 50,
+      });
     } else {
       setHoveredIndex(null);
-      setMousePos(null);
+      setTooltipPos(null);
     }
   };
 
   const handleMouseLeave = () => {
     setHoveredIndex(null);
-    setMousePos(null);
+    setTooltipPos(null);
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="w-full h-full relative"
-      style={{ overflow: 'visible' }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <canvas ref={canvasRef} style={{ display: 'block' }} />
+    <>
+      <div
+        ref={containerRef}
+        className="w-full h-full relative"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <canvas ref={canvasRef} style={{ display: 'block' }} />
+      </div>
 
-      {/* Tooltip */}
-      {hoveredIndex !== null && mousePos && (
-        <div
-          className="absolute bg-[var(--color-surface-secondary)] border border-[var(--color-border-default)] rounded-lg shadow-lg px-3 py-2 pointer-events-none"
-          style={{
-            left: mousePos.x + 10,
-            top: mousePos.y - 50,
-            zIndex: 1000,
-            whiteSpace: 'nowrap',
-          }}
-        >
-          <div className="text-xs text-[var(--color-text-primary)] font-medium mb-1">
-            {formatFullDateTime(data[hoveredIndex].timestamp)}
-          </div>
-          <div className="text-xs text-[var(--color-text-secondary)] flex items-center gap-1">
-            <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-            {formatDateLabel(data[hoveredIndex].timestamp)} : {data[hoveredIndex].value}
-          </div>
-        </div>
-      )}
-    </div>
+      {/* Tooltip via Portal - 완전히 분리하여 ResizeObserver 영향 방지 */}
+      {hoveredIndex !== null &&
+        tooltipPos &&
+        createPortal(
+          <div
+            style={{
+              position: 'fixed',
+              left: tooltipPos.x,
+              top: tooltipPos.y,
+              zIndex: 1000,
+              whiteSpace: 'nowrap',
+              backgroundColor: getCSSVariable('--color-surface-secondary') || '#1f2937',
+              border: `1px solid ${getCSSVariable('--color-border-default') || '#374151'}`,
+              borderRadius: '0.5rem',
+              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+              padding: '0.5rem 0.75rem',
+              pointerEvents: 'none',
+            }}
+          >
+            <div
+              style={{
+                fontSize: '0.75rem',
+                color: getCSSVariable('--color-text-primary') || '#f9fafb',
+                fontWeight: 500,
+                marginBottom: '0.25rem',
+              }}
+            >
+              {formatFullDateTime(data[hoveredIndex].timestamp)}
+            </div>
+            <div
+              style={{
+                fontSize: '0.75rem',
+                color: getCSSVariable('--color-text-secondary') || '#d1d5db',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.25rem',
+              }}
+            >
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '0.5rem',
+                  height: '0.5rem',
+                  borderRadius: '9999px',
+                  backgroundColor: color,
+                }}
+              />
+              {formatDateLabel(data[hoveredIndex].timestamp)} : {data[hoveredIndex].value}
+            </div>
+          </div>,
+          document.body
+        )}
+    </>
   );
 }

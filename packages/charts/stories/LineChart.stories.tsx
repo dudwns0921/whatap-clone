@@ -8,13 +8,6 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <div style={{ width: '700px', height: '350px' }}>
-        <Story />
-      </div>
-    ),
-  ],
 } satisfies Meta<typeof LineChart>;
 
 export default meta;
