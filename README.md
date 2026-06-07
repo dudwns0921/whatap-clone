@@ -99,12 +99,14 @@ whatap-clone/
 - [x] Zustand 스토어 구현
 - [x] 레이아웃 구조 (IconBar + Sidebar + Main)
 - [x] 기본 컴포넌트
-  - [x] Header
+  - [x] Header (동적 제목)
   - [x] ControlBar (LIVE 타이머)
   - [x] Sidebar (ElioTap 브랜딩)
   - [x] ThemeSwitcher (테마 전환 팝업)
 - [x] 테마별 색상 시스템 (#D7E1FF / #003F75)
 - [x] 라이브 타이머 훅 (useLiveTimer)
+- [x] React Router 설정
+- [x] Storybook 통합 (iframe 렌더링)
 
 ### Phase 2: Canvas 차트 위젯 🚧
 
