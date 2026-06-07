@@ -2,7 +2,7 @@
  * Mock 데이터 - 실시간 모니터링 메트릭스
  */
 
-import { LineChartDataPoint } from 'elio-charts';
+import { LineChartDataPoint, HeatmapDataPoint } from 'elio-charts';
 
 // 현재 시간 기준으로 과거 60분 데이터 생성
 const now = new Date();
@@ -53,3 +53,24 @@ export const memoryData: LineChartDataPoint[] = Array.from({ length: 60 }, (_, i
     timestamp: generateTimestamp(minutesAgo),
   };
 });
+
+// 히트맵 데이터 - 개별 트랜잭션들 (최근 5분)
+export const heatmapData: HeatmapDataPoint[] = (() => {
+  const transactions: HeatmapDataPoint[] = [];
+  const nowMs = Date.now();
+
+  // 300개의 트랜잭션 생성 (5분간)
+  for (let i = 0; i < 300; i++) {
+    const secondsAgo = Math.random() * 300; // 0-5분 사이
+    const responseTime = Math.random() * 8000; // 대부분 0-8초
+    const isError = Math.random() < 0.03; // 3% 에러
+
+    transactions.push({
+      timestamp: new Date(nowMs - secondsAgo * 1000).toISOString(),
+      responseTime,
+      isError,
+    });
+  }
+
+  return transactions;
+})();
