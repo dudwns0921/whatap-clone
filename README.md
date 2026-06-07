@@ -85,8 +85,50 @@ whatap-clone/
     └── dashboard/           # 모니터링 대시보드
         └── src/
             ├── index.css    # Tailwind v4 메인 테마
-            └── App.tsx      # Hello World
+            ├── stores/      # Zustand 스토어
+            ├── components/  # React 컴포넌트
+            ├── hooks/       # 커스텀 훅
+            └── pages/       # 페이지 컴포넌트
 ```
+
+## 📊 개발 진행상황
+
+### Phase 1: 기본 UI 구조 ✅
+
+- [x] Tailwind v4 테마 시스템 구축 (Light/Dark)
+- [x] Zustand 스토어 구현
+- [x] 레이아웃 구조 (IconBar + Sidebar + Main)
+- [x] 기본 컴포넌트
+  - [x] Header
+  - [x] ControlBar (LIVE 타이머)
+  - [x] Sidebar (ElioTap 브랜딩)
+  - [x] ThemeSwitcher (테마 전환 팝업)
+- [x] 테마별 색상 시스템 (#D7E1FF / #003F75)
+- [x] 라이브 타이머 훅 (useLiveTimer)
+
+### Phase 2: Canvas 차트 위젯 🚧
+
+- [ ] 히트맵 차트 (Heatmap)
+- [ ] 액티브 트랜잭션 도넛 차트
+- [ ] TPS 라인/에어리어 차트
+- [ ] Apdex 스택 에어리어 차트
+- [ ] 시스템 CPU 차트
+- [ ] 힙 메모리 차트
+
+### Phase 3: 공통 UI 컴포넌트 (packages/ui)
+
+- [ ] Badge
+- [ ] Card / WidgetCard
+- [ ] Dropdown
+- [ ] ToggleGroup
+- [ ] EmptyState
+- [ ] NavItem
+
+### Phase 4: 데이터 & 문서화
+
+- [ ] Mock 데이터 작성
+- [ ] Storybook 스토리
+- [ ] 단위 테스트 (Vitest)
 
 ## 📝 라이선스
 

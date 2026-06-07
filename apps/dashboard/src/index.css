@@ -58,10 +58,11 @@
 [data-theme="light"] {
   /* Surface Colors */
   --color-surface-primary: #ffffff;
-  --color-surface-secondary: #f9fafb;
+  --color-surface-secondary: #ffffff;
   --color-surface-tertiary: #f3f4f6;
   --color-surface-elevated: #fafafa;
   --color-surface-sidebar: #ffffff;
+  --color-dashboard-bg: #f3f4f6;
 
   /* Text Colors */
   --color-text-primary: #1f2937;
@@ -71,6 +72,10 @@
   --color-text-link: #3b82f6;
   --color-text-link-hover: #2563eb;
   --color-text-disabled: #d1d5db;
+
+  /* Selected/Active Colors */
+  --color-selected-bg: #D7E1FF;
+  --color-selected-text: #1f2937;
 
   /* Border Colors */
   --color-border-default: #e5e7eb;
@@ -113,11 +118,12 @@
    ======================================== */
 [data-theme="dark"] {
   /* Surface Colors */
-  --color-surface-primary: #0f1117;
-  --color-surface-secondary: #1a1d27;
-  --color-surface-tertiary: #242834;
-  --color-surface-elevated: #2a2e3a;
-  --color-surface-sidebar: #1a2035;
+  --color-surface-primary: #3C3C3C;
+  --color-surface-secondary: #222222;
+  --color-surface-tertiary: #1f2229;
+  --color-surface-elevated: #34364a;
+  --color-surface-sidebar: #222222;
+  --color-dashboard-bg: #000000;
 
   /* Text Colors */
   --color-text-primary: #f9fafb;
@@ -128,10 +134,14 @@
   --color-text-link-hover: #93c5fd;
   --color-text-disabled: #52525b;
 
+  /* Selected/Active Colors */
+  --color-selected-bg: #003F75;
+  --color-selected-text: #ffffff;
+
   /* Border Colors */
-  --color-border-default: #2a2e3a;
-  --color-border-muted: #1f2229;
-  --color-border-strong: #3f3f46;
+  --color-border-default: #4C4C4C;
+  --color-border-muted: #3a3a3a;
+  --color-border-strong: #5a5a5a;
   --color-border-accent: #3b82f6;
 
   /* Brand Colors */
@@ -165,68 +175,10 @@
 }
 
 /* ========================================
-   Theme: Presentation
-   ======================================== */
-[data-theme="presentation"] {
-  /* Surface Colors */
-  --color-surface-primary: #000000;
-  --color-surface-secondary: #0a0a0a;
-  --color-surface-tertiary: #141414;
-  --color-surface-elevated: #1a1a1a;
-  --color-surface-sidebar: #0f0f0f;
-
-  /* Text Colors */
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #d1d5db;
-  --color-text-tertiary: #9ca3af;
-  --color-text-inverse: #000000;
-  --color-text-link: #60a5fa;
-  --color-text-link-hover: #93c5fd;
-  --color-text-disabled: #52525b;
-
-  /* Border Colors */
-  --color-border-default: #262626;
-  --color-border-muted: #171717;
-  --color-border-strong: #404040;
-  --color-border-accent: #3b82f6;
-
-  /* Brand Colors (더 높은 대비) */
-  --color-brand-cyan: #22d3ee;
-  --color-brand-green: #34d399;
-  --color-brand-yellow: #fbbf24;
-  --color-brand-red: #f87171;
-  --color-brand-purple: #c084fc;
-
-  /* Status Colors */
-  --color-status-excellent-bg: #14532d;
-  --color-status-excellent-text: #86efac;
-  --color-status-good-bg: #166534;
-  --color-status-good-text: #bbf7d0;
-  --color-status-fair-bg: #713f12;
-  --color-status-fair-text: #fde047;
-  --color-status-poor-bg: #7f1d1d;
-  --color-status-poor-text: #fca5a5;
-
-  /* Interactive States */
-  --color-focus-ring: rgba(96, 165, 250, 0.5);
-  --color-hover-overlay: rgba(255, 255, 255, 0.12);
-  --color-active-overlay: rgba(255, 255, 255, 0.16);
-  --color-disabled-bg: #171717;
-
-  /* Live Indicator */
-  --color-live-bg: #14532d;
-  --color-live-border: #166534;
-  --color-live-dot: #34d399;
-  --color-live-text: #86efac;
-}
-
-/* ========================================
    Base Styles
    ======================================== */
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 body {

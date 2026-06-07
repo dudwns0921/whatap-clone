@@ -293,6 +293,44 @@ export const cpuMetrics = Array.from({ length: 60 }, (_, i) => ({
 
 ---
 
+## Git Workflow
+
+### 커밋 규칙
+
+매 커밋 시 **반드시** README.md의 "개발 진행상황" 섹션을 업데이트합니다.
+
+**커밋 전 체크리스트:**
+
+1. 완료한 작업을 README.md에 체크 (`- [x]`)
+2. 다음 단계 작업이 있다면 추가 (`- [ ]`)
+3. Phase 완료 시 제목에 ✅ 표시
+4. 현재 진행 중인 Phase에 🚧 표시
+
+**예시:**
+
+```markdown
+### Phase 1: 기본 UI 구조 ✅
+- [x] Tailwind v4 테마 시스템 구축
+- [x] Zustand 스토어 구현
+
+### Phase 2: Canvas 차트 위젯 🚧
+- [x] 히트맵 차트
+- [ ] 액티브 트랜잭션 도넛 차트
+```
+
+**커밋 메시지 포맷:**
+
+```
+<type>: <subject>
+
+<body (optional)>
+
+🤖 Generated with Claude Code
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+---
+
 ## Agent Skills
 
 프로젝트에 설치된 Vercel Labs Agent Skills:
