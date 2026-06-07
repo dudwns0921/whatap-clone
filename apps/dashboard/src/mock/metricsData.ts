@@ -2,7 +2,7 @@
  * Mock 데이터 - 실시간 모니터링 메트릭스
  */
 
-import { LineChartDataPoint, HeatmapDataPoint } from 'elio-charts';
+import { LineChartDataPoint, HeatmapDataPoint, DonutChartData } from 'elio-charts';
 
 // 현재 시간 기준으로 과거 60분 데이터 생성
 const now = new Date();
@@ -74,3 +74,10 @@ export const heatmapData: HeatmapDataPoint[] = (() => {
 
   return transactions;
 })();
+
+// 액티브 트랜잭션 데이터 - 현재 실행 중인 트랜잭션 상태
+export const activeTransactionData: DonutChartData = {
+  normal: 45, // 정상 응답 시간
+  slow: 12, // 느린 트랜잭션 (~8초)
+  verySlow: 3, // 매우 느린 트랜잭션 (2배 이상)
+};

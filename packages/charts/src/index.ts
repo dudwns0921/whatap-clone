@@ -8,6 +8,8 @@ export { LineChart } from './components/LineChart';
 export type { LineChartProps, LineChartDataPoint } from './components/LineChart';
 export { HeatmapChart } from './components/HeatmapChart';
 export type { HeatmapChartProps, HeatmapDataPoint } from './components/HeatmapChart';
+export { DonutChart } from './components/DonutChart';
+export type { DonutChartProps, DonutChartData } from './components/DonutChart';
 
 // Hooks
 export { useCanvas } from './hooks/useCanvas';

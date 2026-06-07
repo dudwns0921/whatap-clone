@@ -1,7 +1,13 @@
 import Header from '../components/Header';
 import ControlBar from '../components/ControlBar';
-import { LineChart, HeatmapChart } from 'elio-charts';
-import { tpsData, cpuData, memoryData, heatmapData } from '../mock/metricsData';
+import { LineChart, HeatmapChart, DonutChart } from 'elio-charts';
+import {
+  tpsData,
+  cpuData,
+  memoryData,
+  heatmapData,
+  activeTransactionData,
+} from '../mock/metricsData';
 
 export default function Dashboard() {
   return (
@@ -34,8 +40,21 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-[var(--color-surface-secondary)] border border-[var(--color-border-default)] rounded-md p-4 h-64 flex items-center justify-center text-[var(--color-text-tertiary)]">
-            액티브 트랜잭션 위젯
+          <div className="bg-[var(--color-surface-secondary)] border border-[var(--color-border-default)] rounded-md p-4 h-64">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-xs font-semibold text-[var(--color-text-primary)]">
+                액티브 트랜잭션
+              </h3>
+            </div>
+            <div className="h-[calc(100%-2rem)]">
+              <DonutChart
+                data={activeTransactionData}
+                normalColor="#3b82f6"
+                slowColor="#f59e0b"
+                verySlowColor="#ef4444"
+                showLegend={true}
+              />
+            </div>
           </div>
 
           {/* TPS Widget */}
