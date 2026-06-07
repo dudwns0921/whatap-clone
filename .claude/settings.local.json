@@ -17,7 +17,9 @@
       "Bash(git reset:*)",
       "WebFetch(domain:docs.whatap.io)",
       "Bash(npm run build-storybook:*)",
-      "Bash(npm run copy-storybook:*)"
+      "Bash(npm run copy-storybook:*)",
+      "Bash(npx turbo:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []

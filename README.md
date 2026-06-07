@@ -110,12 +110,20 @@ whatap-clone/
 
 ### Phase 2: Canvas 차트 위젯 🚧
 
+- [x] Canvas 기본 인프라
+  - [x] useCanvas 훅 (devicePixelRatio 처리)
+  - [x] useChartResize 훅 (ResizeObserver)
+  - [x] Canvas 유틸리티 (drawLine, drawText, drawGrid 등)
+  - [x] 차트 유틸리티 (scaleValue, valueToY, indexToX 등)
+- [x] LineChart 구현
+  - [x] TPS 데이터 시각화
+  - [x] Grid 라인 및 Y축 레이블
+  - [x] 반응형 크기 조정
+  - [x] Storybook 스토리 (6가지 케이스)
+  - [x] 대시보드 통합 (TPS, CPU, 메모리)
 - [ ] 히트맵 차트 (Heatmap)
 - [ ] 액티브 트랜잭션 도넛 차트
-- [ ] TPS 라인/에어리어 차트
 - [ ] Apdex 스택 에어리어 차트
-- [ ] 시스템 CPU 차트
-- [ ] 힙 메모리 차트
 
 ### Phase 3: 공통 UI 컴포넌트 (packages/ui)
 
