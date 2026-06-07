@@ -30,7 +30,6 @@ export default function Dashboard() {
                 errorColor="#ef4444"
                 maxResponseTime={80}
                 timeRangeSec={300}
-                showGrid={true}
               />
             </div>
           </div>

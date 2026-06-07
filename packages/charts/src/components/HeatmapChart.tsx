@@ -16,7 +16,6 @@ export interface HeatmapChartProps {
   errorColor?: string; // 에러 트랜잭션 색상 (default: red/orange)
   maxResponseTime?: number; // Maximum response time in seconds (default: 80)
   timeRangeSec?: number; // Time range to display in seconds (default: 300 = 5 min)
-  showGrid?: boolean;
 }
 
 export function HeatmapChart({
@@ -25,7 +24,6 @@ export function HeatmapChart({
   errorColor = '#ef4444', // Red for errors
   maxResponseTime = 80, // 80 seconds
   timeRangeSec = 300, // 5 minutes
-  showGrid = true,
 }: HeatmapChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { width, height } = useChartResize(containerRef);
