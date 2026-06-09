@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex w-full h-screen overflow-hidden" style={{ minWidth: '1280px', minHeight: '720px' }}>
+    <div className="flex w-full h-screen overflow-hidden">
       {/* Icon Bar (좁은 바) */}
       <IconBar />
 

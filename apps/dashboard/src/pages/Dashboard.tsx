@@ -20,7 +20,7 @@ export default function Dashboard() {
 
       {/* Main Content - Widget Grid */}
       <div className="flex-1 overflow-auto bg-[var(--color-dashboard-bg)] p-3">
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2 min-w-[1200px]">
           {/* Heatmap Widget */}
           <div className="col-span-2 bg-[var(--color-surface-secondary)] border border-[var(--color-border-default)] rounded-md p-4 h-64">
             <div className="flex items-center justify-between mb-2">

@@ -10,6 +10,7 @@ interface DashboardStore {
   liveElapsed: number; // seconds
   selectedAgent: string;
   timeRange: string;
+  isSidebarCollapsed: boolean;
 
   // Actions
   setTheme: (theme: Theme) => void;
@@ -20,6 +21,8 @@ interface DashboardStore {
   incrementLiveElapsed: () => void;
   setAgent: (agent: string) => void;
   setTimeRange: (range: string) => void;
+  toggleSidebar: () => void;
+  setSidebarCollapsed: (collapsed: boolean) => void;
 }
 
 export const useDashboardStore = create<DashboardStore>()(
@@ -31,6 +34,7 @@ export const useDashboardStore = create<DashboardStore>()(
       liveElapsed: 0,
       selectedAgent: 'whatap-test-45-105-node',
       timeRange: 'Default',
+      isSidebarCollapsed: false,
 
       // Actions
       setTheme: (theme) => {
@@ -73,6 +77,16 @@ export const useDashboardStore = create<DashboardStore>()(
         set({
           timeRange: range,
         }),
+
+      toggleSidebar: () =>
+        set((state) => ({
+          isSidebarCollapsed: !state.isSidebarCollapsed,
+        })),
+
+      setSidebarCollapsed: (collapsed) =>
+        set({
+          isSidebarCollapsed: collapsed,
+        }),
     }),
     {
       name: 'whatap-dashboard-storage',
@@ -80,6 +94,7 @@ export const useDashboardStore = create<DashboardStore>()(
         theme: state.theme,
         selectedAgent: state.selectedAgent,
         timeRange: state.timeRange,
+        isSidebarCollapsed: state.isSidebarCollapsed,
       }),
     }
   )
